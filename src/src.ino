@@ -1,16 +1,16 @@
 #include <ECE3.h>
 
-const int left_p = -1;
-const int right_p = 1;
+const int max_pos = 2260;
+const int left_p = -60;
+const int right_p = 60;
 const int left_d = 1;
 const int right_d = 1;
-const int forward = HIGH;
-const int backward = LOW;
-const int speed = 50;
+const int forward = LOW;
+const int backward = HIGH;
+const int speed = 40;
 int position = 0;
 int last_position = 0;
 uint16_t sensorValues[8];
-
 const int left_nslp_pin=31; // nslp ==> awake & ready for PWM
 const int left_dir_pin=29;
 const int left_pwm_pin=40;
@@ -39,8 +39,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   position = getPosition(sensorValues);
-  analogWrite(left_pwm_pin, speed + (position * left_p));
-  analogWrite(right_pwm_pin,speed + (position * right_p));
+  analogWrite(left_pwm_pin, speed + ((position / max_pos) * left_p));
+  analogWrite(right_pwm_pin, speed + ((position / max_pos) * right_p));
+  // last_position = position;
   // analogWrite(left_pwm_pin, speed + (position * left_p) + ((position - last_position) * left_d));
   // analogWrite(right_pwm_pin, speed + (position * right_p) + ((position - last_position) * right_d));
 }
